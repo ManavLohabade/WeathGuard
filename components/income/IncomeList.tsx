@@ -5,7 +5,7 @@ import { deleteIncome } from '@/actions/income'
 import { Button } from '@/components/ui/button'
 import { Trash2, Pencil, ChevronDown } from 'lucide-react'
 import type { Income } from '@/types'
-import IncomeForm from '@/components/forms/IncomeForm'
+import IncomeForm from '@/components/income/IncomeForm'
 
 const CATEGORY_COLORS: Record<string, string> = {
   'Salary': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20',

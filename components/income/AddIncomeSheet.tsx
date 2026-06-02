@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import IncomeForm from '@/components/forms/IncomeForm'
+import IncomeForm from '@/components/income/IncomeForm'
 
 interface AddIncomeSheetProps {
   defaultCurrency: string

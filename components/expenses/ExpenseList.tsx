@@ -5,7 +5,7 @@ import { deleteExpense } from '@/actions/expenses'
 import { Button } from '@/components/ui/button'
 import { Trash2, Pencil, ChevronDown } from 'lucide-react'
 import type { Expense, ExpenseType } from '@/types'
-import ExpenseForm from '@/components/forms/ExpenseForm'
+import ExpenseForm from '@/components/expenses/ExpenseForm'
 
 const TYPE_BADGE: Record<ExpenseType, string> = {
   Need: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20',

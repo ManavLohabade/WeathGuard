@@ -1,12 +1,8 @@
-import { redirect } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getExpensesByMonth } from '@/actions/expenses'
-import { Button } from '@/components/ui/button'
 import MonthSelector from '@/components/dashboard/MonthSelector'
-import ExpenseList from '@/components/dashboard/ExpenseList'
-import AddExpenseSheet from '@/components/dashboard/AddExpenseSheet'
+import ExpenseList from '@/components/expenses/ExpenseList'
+import AddExpenseSheet from '@/components/expenses/AddExpenseSheet'
 
 interface ExpensesPageProps {
   searchParams: Promise<{ month?: string }>
@@ -15,16 +11,14 @@ interface ExpensesPageProps {
 export default async function ExpensesPage({ searchParams }: ExpensesPageProps) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
 
   const { month } = await searchParams
   const monthYear = month ?? new Date().toISOString().slice(0, 7)
 
-  // Fetch profile for default currency
   const { data: profile } = await supabase
     .from('profiles')
     .select('default_currency')
-    .eq('id', user.id)
+    .eq('id', user!.id)
     .single()
 
   const defaultCurrency = profile?.default_currency ?? 'USD'
@@ -45,17 +39,11 @@ export default async function ExpensesPage({ searchParams }: ExpensesPageProps) 
     }).format(amount)
 
   return (
-    <div className="min-h-screen bg-background p-4 sm:p-8">
-      {/* Header */}
-      <header className="flex flex-wrap items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3">
-          <Button asChild variant="ghost" size="icon">
-            <Link href="/dashboard"><ArrowLeft className="h-4 w-4" /></Link>
-          </Button>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Expenses</h1>
-            <p className="text-sm text-muted-foreground">Track your spending by month</p>
-          </div>
+    <div className="p-4 sm:p-8 space-y-8">
+      <header className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Expenses</h1>
+          <p className="text-sm text-muted-foreground">Track your spending by month</p>
         </div>
         <div className="flex items-center gap-3">
           <MonthSelector />
@@ -64,7 +52,7 @@ export default async function ExpensesPage({ searchParams }: ExpensesPageProps) 
       </header>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-card border rounded-xl p-4">
           <p className="text-xs text-muted-foreground mb-1">Total</p>
           <p className="text-xl font-bold">{formatAmt(totalExpenses)}</p>
